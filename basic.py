@@ -3,7 +3,7 @@
 #############################
 
 from errors import *
-from string_with_arrows import *
+from helpers.string_with_arrows import *
 
 #############################
 # CONSTANTS

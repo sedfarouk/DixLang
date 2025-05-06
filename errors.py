@@ -1,4 +1,4 @@
-from string_with_arrows import *
+from helpers.string_with_arrows import *
 
 class Error:
     def __init__(self, pos_start, pos_end, error_name, details):
