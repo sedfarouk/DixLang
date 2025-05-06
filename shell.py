@@ -1,7 +1,7 @@
 from basic import run
 
 while True:
-    text = input('BasicxShell > ')
+    text = input('DixShell > ')
     result, error = run('<stdin>', text)
 
     if error:
