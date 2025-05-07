@@ -6,8 +6,13 @@ class ParseResult:
     def __init__(self):
         self.error = None
         self.node = None
+        self.advance_count = 0
+
+    def register_with_advancement(self,):
+        self.advance_count += 1
 
     def register(self, res):
+        self.advance_count += res.advance_count
         if res.error: self.error = res.error
         return res.node
 
@@ -16,5 +21,6 @@ class ParseResult:
         return self
 
     def failure(self, error):
-        self.error = error
+        if not self.error or self.advance_count == 0:
+            self.error = error
         return self 

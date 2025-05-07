@@ -35,6 +35,7 @@ class Interpreter:
         if not value:
             return res.failure(RuntimeErrorX(node.pos_start, node.pos_end, f"'{variable_name}' is not defined", context))
 
+        value = value.copy().set_pos(node.pos_start, node.pos_end)
         return res.success(value)
 
     def visit_VariableAssignmentNode(self, node, context):
