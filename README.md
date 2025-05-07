@@ -27,4 +27,7 @@ Snapshots of the program in action will be included below to demonstrate:
 - The interactive shell processing valid arithmetic expressions.
 - The error output when syntax errors are detected.
   
-*_(Insert snapshots here)_*
+
+![Alt text](screenshots\arithmetic_op.png)
+
+![Alt text](screenshots\arithmetic_invalid_syntax.png)
