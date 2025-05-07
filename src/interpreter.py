@@ -47,6 +47,9 @@ class Interpreter:
         elif node.op_tok.type == TT_DIV:
             result, error = left.dived_by(right)
 
+        elif node.op_tok.type == TT_POW:
+            result, error = left.exp_by(right)
+
         if error:
             return res.failure(error)
         else:

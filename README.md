@@ -8,7 +8,7 @@ Out of no particular reason, I have started and chose to build an interpreted la
 ## Current Progress
 
 - **Arithmetic Operations:**  
-  - Perform binary (addition, subtraction, multiplication, division) and unary (negation) operations.
+  - Perform binary (addition, subtraction, multiplication, division, exponentiation) and unary (negation) operations.
 
 - **Lexing & Parsing:**  
   - Tokenization of input for numbers, arithmetic operators, and parentheses.
@@ -23,6 +23,7 @@ Out of no particular reason, I have started and chose to build an interpreted la
 - Run arithmetic expressions through the interactive console, for example:
   - `5 + 3`
   - `-2 * (4 + 1)`
+  - `2 ^ 2`
 
 - View immediate results of calculations and detailed error messages on faulty expressions.
 

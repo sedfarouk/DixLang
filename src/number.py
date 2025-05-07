@@ -35,7 +35,11 @@ class Number:
         if isinstance(other, Number):
             if other.value == 0:
                 return None, RuntimeErrorX(other.pos_start, other.pos_end, 'Division by zero', self.context)
-            return Number(self.value / other.value).set_context(self.context)
+            return Number(self.value / other.value).set_context(self.context), None
         
+    def exp_by(self, other):
+        if isinstance(other, Number):
+            return Number(self.value ** other.value).set_context(self.context), None
+
     def __repr__(self ):
         return str(self.value)
