@@ -2,6 +2,7 @@
 # INTERPRETER
 #############################
 
+from .validations.runtime_result import RuntimeResult
 from .token_types import *
 from .number import Number
 
@@ -20,32 +21,51 @@ class Interpreter:
     
     def visit_NumberNode(self, node):
         # print('Found number node')
-        return Number(node.tok.value).set_pos(node.pos_start, node.pos_end)
+        res = RuntimeResult()
+
+        return res.success(Number(node.tok.value).set_pos(node.pos_start, node.pos_end).set_pos(node.pos_start, node.pos_end))
 
     def visit_BinOpNode(self, node):
         # print('Found binary operator node')
-        left = self.visit(node.left_node)
-        right = self.visit(node.right_node)
+        res = RuntimeResult()
+
+        left = res.register(self.visit(node.left_node))
+        if res.error: return res
+
+        right = res.register(self.visit(node.right_node))
+        if res.error: return res
 
         if node.op_tok.type == TT_PLUS:
-            result = left.added_to(right)
+            result, error = left.added_to(right)
 
         elif node.op_tok.type == TT_MINUS:
-            result = left.subbed_by(right)
+            result, error = left.subbed_by(right)
 
         elif node.op_tok.type == TT_MUL:
-            result = left.multed_by(right)
+            result, error = left.multed_by(right)
 
         elif node.op_tok.type == TT_DIV:
-            result = left.dived_by(right)
+            result, error = left.dived_by(right)
 
-        return result.set_pos(node.pos_start, node.pos_end)
+        if error:
+            return res.failure(error)
+        else:
+            return res.success(result.set_pos(node.pos_start, node.pos_end))
 
     def visit_UnaryOpNode(self, node):
         # print('Found unary operator node')
-        number = self.visit(node.node)
+        res = RuntimeResult()
+
+        number = res.register(self.visit(node.node))
+
+        if res.error: return res
+
+        error = None
 
         if node.op_tok.type == TT_MINUS:
-            number = number.multed_by(Number(-1))
+            number, error = number.multed_by(Number(-1))
         
-        return number
+        if error:
+            return res.failure(error)
+        else:
+            return res.success(number.set_pos(node.pos_start, node.pos_end))

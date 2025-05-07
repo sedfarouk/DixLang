@@ -1,4 +1,4 @@
-from helpers.string_with_arrows import *
+from ..helpers.string_with_arrows import *
 
 class Error:
     def __init__(self, pos_start, pos_end, error_name, details):
@@ -21,3 +21,7 @@ class IllegalCharError(Error):
 class InvalidSyntaxError(Error):
     def __init__(self, pos_start, pos_end, details):
         super().__init__(pos_start=pos_start, pos_end=pos_end, error_name='Invalid Syntax', details=details)
+
+class RuntimeErrorX(Error):
+    def __init__(self, pos_start, pos_end, details):
+        super().__init__(pos_start=pos_start, pos_end=pos_end, error_name='Runtime Error', details=details)

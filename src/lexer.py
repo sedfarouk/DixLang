@@ -9,8 +9,8 @@ DIGITS = '0123456789'
 # LEXER
 #############################
 
-from errors import *
-from helpers.position import Position
+from .validations.errors import *
+from .helpers.position import Position
 from .dix_token import Token
 from .token_types import *
 

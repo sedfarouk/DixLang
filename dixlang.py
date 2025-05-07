@@ -28,4 +28,4 @@ def run(fn, text):
     interpreter = Interpreter()
     result = interpreter.visit(ast.node)
 
-    return result, None
+    return result.value, result.error

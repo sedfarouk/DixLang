@@ -2,7 +2,8 @@
 # NODES
 #############################
 
-from errors import InvalidSyntaxError
+from .validations.errors import InvalidSyntaxError
+from .validations.parser_result import *
 from .token_types import *
 
 class NumberNode:
@@ -37,32 +38,7 @@ class UnaryOpNode:
         self.pos_end = self.node.pos_end
 
     def __repr__(self):
-        return f'({self.op_tok}, {self.node})'
-
-
-#############################
-# PARSER RESULT
-#############################
-
-class ParseResult:
-    def __init__(self):
-        self.error = None
-        self.node = None
-
-    def register(self, res):
-        if isinstance(res, ParseResult):
-            if res.error: self.error = res.error
-            return res.node
-        
-        return res
-
-    def success(self, node):
-        self.node = node
-        return self
-
-    def failure(self, error):
-        self.error = error
-        return self    
+        return f'({self.op_tok}, {self.node})'   
 
 
 #############################
