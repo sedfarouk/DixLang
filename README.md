@@ -28,6 +28,6 @@ Snapshots of the program in action will be included below to demonstrate:
 - The error output when syntax errors are detected.
   
 
-![Alt text](screenshots\arithmetic_op.png)
+![Alt text](screenshots/arithmetic_op.png)
 
-![Alt text](screenshots\arithmetic_invalid_syntax.png)
+![Alt text](screenshots/arithmetic_invalid_syntax.png)
