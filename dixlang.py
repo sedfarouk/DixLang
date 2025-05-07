@@ -3,6 +3,7 @@
 #############################
 
 
+from src.context import Context
 from src.lexer import Lexer
 from src.parser import Parser
 from src.interpreter import Interpreter
@@ -26,6 +27,7 @@ def run(fn, text):
 
     # Run program
     interpreter = Interpreter()
-    result = interpreter.visit(ast.node)
+    context = Context('<program>')
+    result = interpreter.visit(ast.node, context)
 
     return result.value, result.error
