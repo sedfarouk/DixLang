@@ -28,6 +28,5 @@ class Number:
         if isinstance(other, Number):
             return Number(self.value / other.value)
         
-    def __repr__(self, other):
-        if isinstance(other, Number):
-            return str(self.value)
+    def __repr__(self ):
+        return str(self.value)

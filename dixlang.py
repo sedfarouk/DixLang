@@ -26,6 +26,6 @@ def run(fn, text):
 
     # Run program
     interpreter = Interpreter()
-    interpreter.visit(ast.node)
+    result = interpreter.visit(ast.node)
 
-    return None, None
+    return result, None
