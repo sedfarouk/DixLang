@@ -8,11 +8,8 @@ class ParseResult:
         self.node = None
 
     def register(self, res):
-        if isinstance(res, ParseResult):
-            if res.error: self.error = res.error
-            return res.node
-        
-        return res
+        if res.error: self.error = res.error
+        return res.node
 
     def success(self, node):
         self.node = node

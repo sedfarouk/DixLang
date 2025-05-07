@@ -3,6 +3,7 @@
 #############################
 
 from .validations.runtime_result import RuntimeResult
+from .validations.errors import *
 from .token_types import *
 from .number import Number
 
@@ -24,6 +25,28 @@ class Interpreter:
         res = RuntimeResult()
 
         return res.success(Number(node.tok.value).set_context(context).set_pos(node.pos_start, node.pos_end).set_pos(node.pos_start, node.pos_end))
+
+    def visit_VariableAccessNode(self, node, context):
+        res = RuntimeResult()
+
+        variable_name = node.variable_name_tok.value
+        value = context.symbol_table.get(variable_name)
+
+        if not value:
+            return res.failure(RuntimeErrorX(node.pos_start, node.pos_end, f"'{variable_name}' is not defined", context))
+
+        return res.success(value)
+
+    def visit_VariableAssignmentNode(self, node, context):
+        res = RuntimeResult()
+
+        variable_name = node.variable_name_tok.value
+        value = res.register(self.visit(node.value_node, context))
+
+        if res.error: return res
+
+        context.symbol_table.set(variable_name, value)
+        return res.success(value)
 
     def visit_BinOpNode(self, node, context):
         # print('Found binary operator node')

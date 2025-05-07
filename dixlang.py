@@ -2,15 +2,21 @@
 # IMPORTS
 #############################
 
-
 from src.context import Context
 from src.lexer import Lexer
 from src.parser import Parser
 from src.interpreter import Interpreter
+from src.symbol_table import SymbolTable
+from src.number import Number
+
 
 #############################
 # RUN
 #############################
+
+
+global_symbol_table = SymbolTable()
+global_symbol_table.set("null", Number(0)) # By default, Null == 0 in DixLang
 
 def run(fn, text):
     # Generate tokens
@@ -28,6 +34,7 @@ def run(fn, text):
     # Run program
     interpreter = Interpreter()
     context = Context('<program>')
+    context.symbol_table = global_symbol_table
     result = interpreter.visit(ast.node, context)
 
     return result.value, result.error

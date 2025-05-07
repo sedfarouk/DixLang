@@ -1,18 +1,28 @@
 #############################
+# IMPORTS
+#############################
+
+from .keywords import KEYWORDS
+from .validations.errors import *
+from .helpers.position import Position
+from .dix_token import Token
+from .token_types import *
+
+import string
+
+
+#############################
 # CONSTANTS
 #############################
 
 DIGITS = '0123456789'
+LETTERS = string.ascii_letters
+LETTERS_DIGITS = LETTERS + DIGITS
 
 
 #############################
 # LEXER
 #############################
-
-from .validations.errors import *
-from .helpers.position import Position
-from .dix_token import Token
-from .token_types import *
 
 class Lexer: 
     def __init__(self, fn, text):
@@ -36,6 +46,9 @@ class Lexer:
             elif self.current_char in DIGITS:
                 tokens.append(self.make_number())
 
+            elif self.current_char in LETTERS:
+                tokens.append(self.make_identifier())
+
             elif self.current_char == '+':
                 tokens.append(Token(TT_PLUS, pos_start=self.pos))
                 self.advance()
@@ -50,6 +63,10 @@ class Lexer:
 
             elif self.current_char == '^':
                 tokens.append(Token(TT_POW, pos_start=self.pos))
+                self.advance()
+
+            elif self.current_char == '=':
+                tokens.append(Token(TT_EQ, pos_start=self.pos))
                 self.advance()
                 
             elif self.current_char == '/':
@@ -95,3 +112,16 @@ class Lexer:
             return Token(TT_INT, int(num_str), pos_start, self.pos)
         else:
             return Token(TT_FLOAT, float(num_str), pos_start, self.pos) 
+
+
+    def make_identifier(self):
+        id_str = ''
+        pos_start = self.pos.copy()
+
+        while self.current_char != None and self.current_char in LETTERS_DIGITS + '_':
+            id_str += self.current_char
+            self.advance()
+
+        tok_type = TT_KEYWORD if id_str in KEYWORDS else TT_IDENTIFIER
+
+        return Token(tok_type, id_str, pos_start, self.pos)
