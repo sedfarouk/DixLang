@@ -6,5 +6,9 @@ KEYWORDS = [
     'IF',
     'THEN',
     'EIF',
-    'ELSE'
+    'ELSE',
+    'FOR',
+    'TO', 
+    'STEP',
+    'WHILE'
 ]

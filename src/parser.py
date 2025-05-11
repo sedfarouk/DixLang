@@ -5,7 +5,10 @@
 from .validations.errors import InvalidSyntaxError
 from .validations.parser_result import *
 from .token_types import *
+
+from .nodes.while_node import *
 from .nodes.if_node import *
+from .nodes.for_node import *
 from .nodes.number_node import *
 from .nodes.binary_operation_node import *
 from .nodes.unary_operation_node import *
@@ -68,6 +71,18 @@ class Parser:
             
             if res.error: return res
             return res.success(if_expr)
+        
+        elif tok.matches(TT_KEYWORD, 'FOR'):
+            for_expr = res.register(self.for_expr())
+            
+            if res.error: return res
+            return res.success(for_expr)
+        
+        elif tok.matches(TT_KEYWORD, 'WHILE'):
+            while_expr = res.register(self.while_expr())
+            
+            if res.error: return res
+            return res.success(while_expr)
         
         return res.failure(InvalidSyntaxError(tok.pos_start, tok.pos_end, "Expected int, float, identifier, '+', '-' or '("))
 
@@ -154,6 +169,95 @@ class Parser:
     def arith_expr(self):
         return self.bin_op(self.term, (TT_PLUS, TT_MINUS))
     
+    def for_expr(self):
+        res = ParseResult()
+        
+        if not self.current_tok.matches(TT_KEYWORD, 'FOR'):
+            return res.failure(InvalidSyntaxError(self.current_tok.pos_start, self.current_tok.pos_end,
+                    f"Expected 'FOR'"))
+            
+        res.register_with_advancement()
+        self.advance()
+        
+        if self.current_tok.type != TT_IDENTIFIER:
+            return res.failure(InvalidSyntaxError(self.current_tok.pos_start, self.current_tok.pos_end,
+                    f"Expected identifier"))
+            
+        var_name = self.current_tok
+        res.register_with_advancement()
+        self.advance()
+        
+        if self.current_tok.type != TT_EQ:
+            return res.failure(InvalidSyntaxError(self.current_tok.pos_start, self.current_tok.pos_end,
+                    f"Expected '='"))   
+            
+        res.register_with_advancement()
+        self.advance()
+        
+        start_val = res.register(self.expr())
+        
+        if res.error: return res
+        
+        if not self.current_tok.matches(TT_KEYWORD, 'TO'):
+            return res.failure(InvalidSyntaxError(self.current_tok.pos_start, self.current_tok.pos_end,
+                    f"Expected 'TO'")) 
+            
+        res.register_with_advancement()
+        self.advance()
+        
+        end_value = res.register(self.expr())
+        
+        if res.error: return res
+        
+        step_value = None
+        if self.current_tok.matches(TT_KEYWORD, 'STEP'):
+            res.register_with_advancement()
+            self.advance()
+            
+            step_value = res.register(self.expr())
+            
+            if res.error: return res
+            
+        if not self.current_tok.matches(TT_KEYWORD, 'THEN'):
+            return res.failure(InvalidSyntaxError(self.current_tok.pos_start, self.current_tok.pos_end,
+                    f"Expected 'THEN'"))
+            
+        res.register_with_advancement()
+        self.advance()
+        
+        body = res.register(self.expr())
+        if res.error: return res
+        
+        return res.success(ForNode(var_name, start_val, end_value, step_value, body))
+    
+    
+    def while_expr(self):
+        res = ParseResult()
+
+        if not self.current_tok.matches(TT_KEYWORD, 'WHILE'):
+            return res.failure(InvalidSyntaxError(self.current_tok.pos_start, self.current_tok.pos_end,
+                f"Expected 'WHILE'"))
+            
+        res.register_with_advancement()
+        self.advance()
+        
+        condition = res.register(self.expr())
+        
+        if res.error: return res
+        
+        if not self.current_tok.matches(TT_KEYWORD, 'THEN'):
+            return res.failure(InvalidSyntaxError(self.current_tok.pos_start, self.current_tok.pos_end,
+                f"Expected 'THEN'"))
+            
+        res.register_with_advancement()
+        self.advance()
+        
+        body = res.register(self.expr())
+        
+        if res.error: return res
+        
+        return res.success(WhileNode(condition, body))
+    
     def comp_expr(self):
         res = ParseResult()
 
@@ -172,6 +276,7 @@ class Parser:
             return res.failure(self.current_tok.pos_start, self.current_tok.pos_end, "Expected int, float, identifier, '+', '-', 'NOT' or '(")
 
         return res.success(node)
+
 
     def expr(self):
         res = ParseResult()
