@@ -13,7 +13,6 @@ class Error:
         result += '\n\n' + string_with_arrows(self.pos_start.ftxt, self.pos_start, self.pos_end)
         return result
     
-
 class IllegalCharError(Error):
     def __init__(self, pos_start, pos_end, details):
         super().__init__(pos_start=pos_start, pos_end=pos_end, error_name='Illegal Character', details=details)
@@ -45,3 +44,8 @@ class RuntimeErrorX(Error):
             ctx = ctx.parent
 
         return 'Traceback (most recent call last):\n' + result
+    
+
+class ExpectedCharError(Error):
+    def __init__(self, pos_start, pos_end, error_name, details):
+        super().__init__(pos_start, pos_end, error_name, details)

@@ -1,3 +1,6 @@
 KEYWORDS = [
-    'VAR'
+    'VAR', 
+    'AND',
+    'OR', 
+    'NOT'
 ]

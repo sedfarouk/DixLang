@@ -11,12 +11,17 @@ Out of no particular reason, I have started and chose to build an interpreted la
   - Perform binary (addition, subtraction, multiplication, division, exponentiation) and unary (negation) operations.
 
 - **Lexing & Parsing:**  
-  - Tokenization of input for numbers, arithmetic operators, and parentheses.
+  - Tokenization of input for numbers, arithmetic operators, parentheses, and variable keywords.
   - Parsing of tokens into an abstract syntax tree (AST).
 
 - **Interpreting:**  
   - Evaluation of the AST to calculate arithmetic expressions.
   - Error detection and location reporting for syntax errors.
+
+- **Variables:**  
+    - You can now assign variables using the `VAR` keyword (e.g., `VAR a = 20`).
+    - Variables can be used anywhere in expressions.
+    - You can even assign a variable as part of an expression, for example: `2 + (VAR x = 2)` will return 4 while storing the value `2` in variable `x`.
 
 ## What You Can Currently Do
 
@@ -24,16 +29,19 @@ Out of no particular reason, I have started and chose to build an interpreted la
   - `5 + 3`
   - `-2 * (4 + 1)`
   - `2 ^ 2`
+  - `VAR a = 20`
+  - `2 + (VAR x = 2)`  *(returns 4 with `x` storing the value `2`)*
 
 - View immediate results of calculations and detailed error messages on faulty expressions.
 
 ## Snapshots
 
 Snapshots of the program in action will be included below to demonstrate:
-- The interactive shell processing valid arithmetic expressions.
+- The interactive shell processing valid arithmetic expressions and variable assignments.
 - The error output when syntax errors are detected.
-  
 
-![Alt text](screenshots/arithmetic_op.png)
+![Arithmetic Operations](screenshots/arithmetic_op.png)
 
-![Alt text](screenshots/arithmetic_invalid_syntax.png)
+![Syntax Error](screenshots/arithmetic_invalid_syntax.png)
+
+![Variables](screenshots/int_var.png)
