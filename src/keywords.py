@@ -5,10 +5,11 @@ KEYWORDS = [
     'NOT',
     'IF',
     'THEN',
-    'EIF',
+    'ELSEIF',
     'ELSE',
     'FOR',
     'TO', 
     'STEP',
-    'WHILE'
+    'WHILE',
+    'FN'
 ]

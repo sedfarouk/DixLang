@@ -2,6 +2,7 @@
 # INTERPRETER
 #############################
 
+from .function import Function
 from .validations.runtime_result import RuntimeResult
 from .validations.errors import *
 from .token_types import *
@@ -17,8 +18,46 @@ class Interpreter:
 
         return method(node, context)
     
+    
     def no_visit_method(self, node, context):
         raise Exception(f'No visit_{type(node).__name__} method defined')
+    
+    
+    def visit_FuncDefNode(self, node, context):
+        res = RuntimeResult()
+        
+        func_name = node.var_name_tok.value if node.var_name_tok else None
+        body_node = node.body_node
+        arg_names = [arg_name.value for arg_name in node.arg_name_toks]
+        
+        func_value = Function(func_name, body_node, arg_names).set_context(context).set_pos(node.pos_start, node.pos_end)
+    
+        if node.var_name_tok:
+            context.symbol_table.set(func_name, func_value)
+            
+        return res.success(func_value)
+    
+    def visit_CallNode(self, node, context):
+        res = RuntimeResult()
+        args = []
+        
+        value_to_call = res.register(self.visit(node.node_to_call, context)) 
+        
+        if res.error: return res
+        
+        value_to_call = value_to_call.copy().set_pos(node.pos_start, node.pos_end)
+        
+        for arg_node in node.arg_nodes:
+            args.append(res.register(self.visit(arg_node, context)))
+            
+            if res.error: return res
+            
+        return_val = res.register(value_to_call.execute(args))
+        
+        if res.error: return res
+        
+        return res.success(return_val)
+        
     
     def visit_NumberNode(self, node, context):
         # print('Found number node')
