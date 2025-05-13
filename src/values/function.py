@@ -13,7 +13,7 @@ class Function(CustomValue):
         
     def execute(self, args):
         res = RuntimeResult()
-        from ..interpreter import Interpreter # breaks circular dependency by deferring import until needed
+        from ..main.interpreter import Interpreter # breaks circular dependency by deferring import until needed
         interpreter = Interpreter()
         
         new_context = Context(self.name, self.context, self.pos_start)

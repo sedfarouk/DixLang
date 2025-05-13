@@ -1,4 +1,4 @@
-from dixlang import run
+from src.main.dixlang import run
 
 while True:
     text = input('DixShell > ')

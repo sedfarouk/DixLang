@@ -3,9 +3,9 @@
 #############################
 
 from src.storage.context import Context
-from src.lexer import Lexer
+from src.main.lexer import Lexer
 from src.parser import Parser
-from src.interpreter import Interpreter
+from src.main.interpreter import Interpreter
 from src.storage.symbol_table import SymbolTable
 from src.values.number import Number
 

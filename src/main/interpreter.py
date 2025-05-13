@@ -2,13 +2,13 @@
 # INTERPRETER
 #############################
 
-from .values.string import String
-from .values.function import Function
-from .validations.runtime_result import RuntimeResult
-from .validations.errors import *
-from .constants.token_types import *
-from .values.number import Number
-from .values.list import List
+from ..values.string import String
+from ..values.function import Function
+from ..validations.runtime_result import RuntimeResult
+from ..validations.errors import *
+from ..constants.token_types import *
+from ..values.number import Number
+from ..values.list import List
 
 class Interpreter:
     def __init__(self):

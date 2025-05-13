@@ -2,11 +2,11 @@
 # IMPORTS
 #############################
 
-from .constants.keywords import KEYWORDS
-from .validations.errors import *
-from .helpers.position import Position
-from .token.dix_token import Token
-from .constants.token_types import *
+from ..constants.keywords import KEYWORDS
+from ..validations.errors import *
+from ..helpers.position import Position
+from ..token.dix_token import Token
+from ..constants.token_types import *
 
 import string
 
