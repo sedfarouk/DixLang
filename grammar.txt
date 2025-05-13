@@ -17,10 +17,13 @@ call    : atom (LPAREN (expr (COMMA expr)*)? RPAREN)?
 
 atom    : INT|FLOAT|STRING|IDENTIFIER
         : LPAREN expr RPAREN
+        : list-expr
         : if-expr
         : for-expr
         : while-expr
         : func-def
+
+list-expr : LSQB (expr (COMMA expr)*)? RSQB
 
 if-expr : KEYWORD:IF expr KEYWORD:THEN expr
           (KEYWORD:EIF expr KEYWORD:THEN expr)*

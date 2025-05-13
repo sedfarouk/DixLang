@@ -8,6 +8,7 @@ from .validations.runtime_result import RuntimeResult
 from .validations.errors import *
 from .constants.token_types import *
 from .values.number import Number
+from .values.list import List
 
 class Interpreter:
     def __init__(self):
@@ -188,6 +189,7 @@ class Interpreter:
     
     def visit_ForNode(self, node, context):
         res = RuntimeResult()
+        elements = []
         
         start_value = res.register(self.visit(node.start_val_node, context))
         
@@ -215,15 +217,16 @@ class Interpreter:
             context.symbol_table.set(node.var_name_tok.value, Number(i))
             i += step_value.value
             
-            res.register(self.visit(node.body_node, context))
+            elements.append(res.register(self.visit(node.body_node, context)))
             
             if res.error: return res
             
-        return res.success(None)
+        return res.success(List(elements).set_context(context).set_pos(node.pos_start, node.pos_end))
     
     
     def visit_WhileNode(self, node, context):
         res = RuntimeResult()
+        elements = []
          
         while True:
             condition = res.register(self.visit(node.condition_node, context))
@@ -232,11 +235,25 @@ class Interpreter:
             
             if not condition.is_true(): break
             
-            res.register(self.visit(node.body_node, context))
+            elements.append(res.register(self.visit(node.body_node, context)))
             
             if res.error: return res
             
-        return res.success(None)
+        return res.success(List(elements).set_context(context).set_pos(node.pos_start, node.pos_end))
+    
     
     def visit_StringNode(self, node, context):
         return RuntimeResult().success(String(node.tok.value).set_context(context).set_pos(node.pos_start, node.pos_end))
+    
+    
+    def visit_ListNode(self, node, context):
+        res = RuntimeResult()
+        elements = []
+        
+        for element_node in node.element_nodes:
+            elements.append(res.register(self.visit(element_node, context)))
+            
+        if res.error: return res
+        
+        return res.success(List(elements).set_context(context).set_pos(node.pos_start, node.pos_end))    
+            
