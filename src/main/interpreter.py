@@ -3,7 +3,7 @@
 #############################
 
 from ..values.string import String
-from ..values.function import Function
+from ..values.functions.function import Function
 from ..validations.runtime_result import RuntimeResult
 from ..validations.errors import *
 from ..constants.token_types import *
@@ -58,6 +58,8 @@ class Interpreter:
         
         if res.error: return res
         
+        return_val = return_val.copy().set_pos(node.pos_start, node.pos_end).set_context(context)
+        
         return res.success(return_val)
         
     
@@ -76,7 +78,7 @@ class Interpreter:
         if not value:
             return res.failure(RuntimeErrorX(node.pos_start, node.pos_end, f"'{variable_name}' is not defined", context))
 
-        value = value.copy().set_pos(node.pos_start, node.pos_end)
+        value = value.copy().set_pos(node.pos_start, node.pos_end).set_context(context)
         return res.success(value)
 
     def visit_VariableAssignmentNode(self, node, context):

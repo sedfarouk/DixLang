@@ -2,22 +2,22 @@
 # NODES
 #############################
 
-from .validations.errors import InvalidSyntaxError
-from .validations.parser_result import *
-from .constants.token_types import *
+from ..validations.errors import InvalidSyntaxError
+from ..validations.parser_result import *
+from ..constants.token_types import *
 
-from .nodes.list_node import *
-from .nodes.while_node import *
-from .nodes.if_node import *
-from .nodes.for_node import *
-from .nodes.number_node import *
-from .nodes.binary_operation_node import *
-from .nodes.unary_operation_node import *
-from .nodes.variable_access_node import *
-from .nodes.variable_assignment_node import *
-from .nodes.func_def_node import *
-from .nodes.call_node import *
-from .nodes.string_node import *
+from ..nodes.list_node import *
+from ..nodes.while_node import *
+from ..nodes.if_node import *
+from ..nodes.for_node import *
+from ..nodes.number_node import *
+from ..nodes.binary_operation_node import *
+from ..nodes.unary_operation_node import *
+from ..nodes.variable_access_node import *
+from ..nodes.variable_assignment_node import *
+from ..nodes.func_def_node import *
+from ..nodes.call_node import *
+from ..nodes.string_node import *
     
 #############################
 # PARSER
