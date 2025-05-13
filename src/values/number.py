@@ -2,7 +2,7 @@
 # VALUES
 #############################
 
-from .validations.errors import *
+from ..validations.errors import *
 from .custom_value import *
 
 class Number(CustomValue):

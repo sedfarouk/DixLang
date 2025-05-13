@@ -1,5 +1,5 @@
-from .validations.runtime_result import RuntimeResult
-from .validations.errors import *
+from ..validations.runtime_result import RuntimeResult
+from ..validations.errors import *
 
 class CustomValue:
     def __init__(self):

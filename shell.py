@@ -2,6 +2,10 @@ from dixlang import run
 
 while True:
     text = input('DixShell > ')
+    
+    if text == 'exit': 
+        break
+    
     result, error = run('<stdin>', text)
 
     if error:

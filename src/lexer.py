@@ -2,11 +2,11 @@
 # IMPORTS
 #############################
 
-from .keywords import KEYWORDS
+from .constants.keywords import KEYWORDS
 from .validations.errors import *
 from .helpers.position import Position
-from .dix_token import Token
-from .token_types import *
+from .token.dix_token import Token
+from .constants.token_types import *
 
 import string
 
@@ -48,6 +48,9 @@ class Lexer:
 
             elif self.current_char in LETTERS:
                 tokens.append(self.make_identifier())
+                
+            elif self.current_char == '"':
+                tokens.append(self.make_string())
 
             elif self.current_char == '+':
                 tokens.append(Token(TT_PLUS, pos_start=self.pos))
@@ -106,6 +109,34 @@ class Lexer:
         
         tokens.append(Token(TT_EOF, pos_start=self.pos))
         return tokens, None
+    
+    
+    def make_string(self):
+        string = ""
+        pos_start = self.pos.copy()
+        escape_character = False
+        self.advance()
+        
+        escape_characters = {
+            'n': '\n',
+            't': '\t'
+        }
+        
+        while self.current_char != None and self.current_char != '"' or escape_character:
+            if escape_character:
+                string += escape_characters.get(self.current_char, self.current_char)
+                escape_character = False
+                
+            else:
+                if self.current_char == '\\':
+                    escape_character = True
+                else:
+                    string += self.current_char
+                    
+            self.advance()
+            
+        self.advance()
+        return Token(TT_STRING, string, pos_start, self.pos)
     
 
     def make_number(self):

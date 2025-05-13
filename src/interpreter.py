@@ -2,11 +2,12 @@
 # INTERPRETER
 #############################
 
-from .function import Function
+from .values.string import String
+from .values.function import Function
 from .validations.runtime_result import RuntimeResult
 from .validations.errors import *
-from .token_types import *
-from .number import Number
+from .constants.token_types import *
+from .values.number import Number
 
 class Interpreter:
     def __init__(self):
@@ -236,3 +237,6 @@ class Interpreter:
             if res.error: return res
             
         return res.success(None)
+    
+    def visit_StringNode(self, node, context):
+        return RuntimeResult().success(String(node.tok.value).set_context(context).set_pos(node.pos_start, node.pos_end))

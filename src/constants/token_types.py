@@ -2,6 +2,7 @@
 # TOKEN TYPES
 #############################
 
+TT_STRING = 'STRING'
 TT_INT = 'INT'
 TT_FLOAT = 'FLOAT'
 TT_PLUS = 'PLUS'

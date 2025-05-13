@@ -1,7 +1,7 @@
-from .validations.errors import RuntimeErrorX
-from .symbol_table import SymbolTable
-from .context import Context
-from .validations.runtime_result import RuntimeResult
+from ..validations.errors import RuntimeErrorX
+from ..storage.symbol_table import SymbolTable
+from ..storage.context import Context
+from ..validations.runtime_result import RuntimeResult
 from .custom_value import CustomValue
 
 class Function(CustomValue):
@@ -13,7 +13,7 @@ class Function(CustomValue):
         
     def execute(self, args):
         res = RuntimeResult()
-        from .interpreter import Interpreter # breaks circular dependency by deferring import until needed
+        from ..interpreter import Interpreter # breaks circular dependency by deferring import until needed
         interpreter = Interpreter()
         
         new_context = Context(self.name, self.context, self.pos_start)

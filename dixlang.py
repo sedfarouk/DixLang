@@ -2,12 +2,12 @@
 # IMPORTS
 #############################
 
-from src.context import Context
+from src.storage.context import Context
 from src.lexer import Lexer
 from src.parser import Parser
 from src.interpreter import Interpreter
-from src.symbol_table import SymbolTable
-from src.number import Number
+from src.storage.symbol_table import SymbolTable
+from src.values.number import Number
 
 
 #############################

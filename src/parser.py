@@ -4,7 +4,7 @@
 
 from .validations.errors import InvalidSyntaxError
 from .validations.parser_result import *
-from .token_types import *
+from .constants.token_types import *
 
 from .nodes.while_node import *
 from .nodes.if_node import *
@@ -16,6 +16,7 @@ from .nodes.variable_access_node import *
 from .nodes.variable_assignment_node import *
 from .nodes.func_def_node import *
 from .nodes.call_node import *
+from .nodes.string_node import *
     
 #############################
 # PARSER
@@ -49,6 +50,11 @@ class Parser:
             res.register_with_advancement()
             self.advance()
             return res.success(NumberNode(tok))
+        
+        if tok.type in (TT_STRING):
+            res.register_with_advancement()
+            self.advance()
+            return res.success(StringNode(tok))
         
         elif tok.type == TT_IDENTIFIER:
             res.register_with_advancement()
@@ -202,7 +208,7 @@ class Parser:
         
         cases.append((condition, expr))
         
-        while self.current_tok.matches(TT_KEYWORD, 'ELSEIF'):
+        while self.current_tok.matches(TT_KEYWORD, 'EIF'):
             res.register_with_advancement()
             self.advance()
             
@@ -219,7 +225,7 @@ class Parser:
             
             expr = res.register(self.expr())
             
-            if not res.error: return res
+            if res.error: return res
             
             cases.append((condition, expr))
             

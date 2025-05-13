@@ -5,7 +5,7 @@ KEYWORDS = [
     'NOT',
     'IF',
     'THEN',
-    'ELSEIF',
+    'EIF',
     'ELSE',
     'FOR',
     'TO', 
