@@ -1,3 +1,10 @@
+statements : NEWLINE* statement (NEWLINE+ statement)* NEWLINE
+
+statement: KEYWORD: RET expr?
+         : KEYWORD: CONT
+         : KEYWORD: BR 
+         : expr
+
 expr    : KEYWORD:VAR IDENTIFIER EQ expr
         : comparison_expression ((KEYWORD:AND|KEYWORD:OR) comparison_expression)*
 
@@ -25,15 +32,26 @@ atom    : INT|FLOAT|STRING|IDENTIFIER
 
 list-expr : LSQB (expr (COMMA expr)*)? RSQB
 
-if-expr : KEYWORD:IF expr KEYWORD:THEN expr
-          (KEYWORD:EIF expr KEYWORD:THEN expr)*
-          (KEYWORD:ELSE expr)?
+if-expr : KEYWORD:IF expr KEYWORD:THEN
+          (expr if-expr-b|if-expr-c)
+          | (NEWLINE statements KEYWORD:END|if-expr-b|if-expr-c)
+
+if-expr-b : KEYWORD:EIF expr KEYWORD:THEN
+          (expr if-expr-b|if-expr-c?)
+          (NEWLINE statements KEYWORD:END|if-expr-b|if-expr-c)
+
+if-expr-c : KEYWORD:ELSE
+          expr
+          (NEWLINE statements KEYWORD:END)
 
 for-expr : KEYWORD:FOR IDENTIFIER EQ expr KEYWORD:TO expr
            (KEYWORD:STEP expr)? KEYWORD:THEN expr
+           | (NEWLINE statements KEYWORD:END)
 
 while-expr: KEYWORD:WHILE expr KEYWORD:THEN expr
+            | (NEWLINE statements KEYWORD:END)
 
 func-def  : KEYWORD:FN IDENTIFIER?
             LPAREN (IDENTIFIER (COMMA IDENTIFIER)*)? RPAREN
             ARROW expr 
+            | (NEWLINE statements KEYWORD:END)

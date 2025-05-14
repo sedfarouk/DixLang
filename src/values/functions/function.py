@@ -1,12 +1,15 @@
 from src.values.functions.base_function import BaseFunction
 from ...validations.runtime_result import RuntimeResult
 
+from src.constants.default_values import *
+
 
 class Function(BaseFunction):
-    def __init__(self, name, body_node, arg_names):
+    def __init__(self, name, body_node, arg_names, should_return_null):
         super().__init__(name)
         self.body_node = body_node
         self.arg_names = arg_names
+        self.should_return_null = should_return_null
         
     def execute(self, args):
         res = RuntimeResult()
@@ -15,17 +18,17 @@ class Function(BaseFunction):
         
         new_context = self.gen_new_context()
         
-        res.register(self.check_and_populate(self.arg_names, args, new_context))
+        res.register(super().check_and_populate_args(self.arg_names, args, new_context))
             
         if res.error: return res
             
         value = res.register(interpreter.visit(self.body_node, new_context)) 
         if res.error: return res
         
-        return res.success(value)
+        return res.success(Number.null if self.should_return_null else value)
     
     def copy(self):
-        copy = Function(self.name, self.body_node, self.arg_names)
+        copy = Function(self.name, self.body_node, self.arg_names, self.should_return_null)
         copy.set_context(self.context)
         copy.set_pos(self.pos_start, self.pos_end)
         

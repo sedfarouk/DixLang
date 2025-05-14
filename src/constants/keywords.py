@@ -11,5 +11,9 @@ KEYWORDS = [
     'TO', 
     'STEP',
     'WHILE',
-    'FN'
+    'FN',
+    'END',
+    'RET',
+    'CONT'
+    'BR'
 ]

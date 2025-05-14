@@ -108,6 +108,10 @@ class Lexer:
             elif self.current_char == ',':
                 tokens.append(Token(TT_COMMA, pos_start=self.pos))
                 self.advance()
+                
+            elif self.current_char in ';\n':
+                tokens.append(Token(TT_NEWLINE, pos_start=self.pos))
+                self.advance()
 
             else:
                 pos_start = self.pos.copy()

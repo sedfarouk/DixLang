@@ -1,7 +1,7 @@
 # DixLang
 Yesss, you read that right! Dix...Lang. I have always wanted to do this - create my own language from **SCRATCH** and at least put my DSA skills to good use...brr 😎 - but felt lazyyyy...
 
-Out of no particular reason, I have started and chose to build an interpreted language using Python. Might think of building a compiled language after this but building this can at least satisfy my desire to learn more about how programming languages work 💪!
+Out of no particular reason, I have started and chose to build an interpreted language using Python. DixLang is inspired by BASIC (cos it's a simple language, lol). Might think of building a compiled language after this but building this can at least satisfy my desire to learn more about how programming languages work 💪!
 
 ...and yes, I know it's gonna be buried in the cemetries of Git 💀 but I don't plan on being the next Dennis Ritchie 😅
 

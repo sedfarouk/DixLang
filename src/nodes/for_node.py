@@ -1,9 +1,10 @@
 class ForNode:
-    def __init__(self, var_name_tok, start_val_node, end_val_node, step_val_node, body_node):
+    def __init__(self, var_name_tok, start_val_node, end_val_node, step_val_node, body_node, should_return_null):
         self.var_name_tok = var_name_tok
         self.start_val_node = start_val_node
         self.end_val_node = end_val_node
         self.step_val_node = step_val_node
+        self.should_return_null = should_return_null        
         self.body_node = body_node
         
         self.pos_start = self.var_name_tok.pos_start
