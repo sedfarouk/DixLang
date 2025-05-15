@@ -4,6 +4,8 @@ from src.validations.runtime_result import RuntimeResult
 from src.values.functions.base_function import BaseFunction
 from src.values.list import List
 from src.values.string import String
+from src.main import dixlang
+from src.validations.errors import RuntimeErrorX
 
 from ...constants.default_values import *
 
@@ -113,7 +115,7 @@ class BuiltInFunction(BaseFunction):
         value = exec_ctx.symbol_table.get("value")
         
         if not isinstance(list_, List):
-            return RuntimeResult().failure(RuntimeError(self.pos_start, self.pos_end, 
+            return RuntimeResult().failure(RuntimeErrorX(self.pos_start, self.pos_end, 
                 "First argument must be list",
                 exec_ctx))
             
@@ -122,6 +124,20 @@ class BuiltInFunction(BaseFunction):
         return RuntimeResult().success(Number.null)
         
     execute_append.arg_names = ['list', 'value']
+    
+    
+    def execute_length(self, exec_ctx):
+        list_ = exec_ctx.symbol_table.get("list")
+        
+        if not isinstance(list_, List):
+            return RuntimeResult().failure(RuntimeErrorX(self.pos_start, self.pos_end, 
+                "Argument must be list",
+                exec_ctx))
+            
+        return RuntimeResult().success(Number(len(list_.elements)))
+        
+    execute_length.arg_names = ["list"]
+    
     
     def execute_pop(self, exec_ctx):
         list_ = exec_ctx.symbol_table.get("list")
@@ -165,6 +181,40 @@ class BuiltInFunction(BaseFunction):
         
         return RuntimeResult().success(Number.null)       
     execute_extend.arg_names = ['listA', 'listB']
+    
+    
+    def execute_run(self, exec_ctx):
+        fn = exec_ctx.symbol_table.get('fn')
+        
+        if not isinstance(fn, String):
+            return RuntimeResult().failure(RuntimeError(self.pos_start, self.pos_end,
+                "Argument must be a string", exec_ctx))
+            
+        fn = fn.value
+        
+        try:
+            with open(fn, 'r') as f:
+                script = f.read()
+                
+        except Exception as e:
+            return RuntimeResult().failure(RuntimeErrorX(
+                self.pos_start, self.pos_end,
+                f"Failed to load script \"{fn}\"\n" + str(e),
+                exec_ctx
+            ))
+            
+        _, error = dixlang.run(fn, script)
+        
+        if error:
+            return RuntimeResult().failure(RuntimeErrorX(
+                self.pos_start, self.pos_end,
+                f"Failed to finish executing script \"{fn}\"\n" + error.as_string(),
+                exec_ctx
+            ))
+            
+        return RuntimeResult().success(Number.null)        
+    execute_run.arg_names = ["fn"]
+    
    
 # To refactor later to use Enums 
 BuiltInFunction.write       = BuiltInFunction("write")
@@ -179,4 +229,6 @@ BuiltInFunction.is_function = BuiltInFunction("is_function")
 BuiltInFunction.append      = BuiltInFunction("append")
 BuiltInFunction.pop         = BuiltInFunction("pop")
 BuiltInFunction.extend      = BuiltInFunction("extend")
+BuiltInFunction.length      = BuiltInFunction("length")
+BuiltInFunction.run      = BuiltInFunction("run")
     

@@ -1,0 +1,16 @@
+WRITE("I FINALLY DID IT! MY OWN PROGRAMMING LANGUAGE !")
+
+~ This is a comment
+FN concatenate(prefix, suffix) -> prefix + suffix
+
+FOR i = 0 TO 5 THEN
+    WRITE(concatenate("This is a from a ", "function"))
+END
+
+FN fib(n)
+    IF n <= 1 THEN RET n
+
+    RET fib(n - 1) + fib(n - 2)
+END
+
+WRITE(fib(10))
