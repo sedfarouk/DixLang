@@ -5,7 +5,7 @@ while True:
     
     if text.strip() == "": continue
     
-    if text == 'exit': 
+    if text.strip() == 'exit': 
         break
     
     result, error = dixlang.run('<stdin>', text)

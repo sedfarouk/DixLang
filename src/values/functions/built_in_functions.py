@@ -21,11 +21,11 @@ class BuiltInFunction(BaseFunction):
         
         res.register(self.check_and_populate_args(method.arg_names, args, exec_ctx))
         
-        if res.error: return res
+        if res.should_return(): return res
         
         return_value = res.register(method(exec_ctx))
         
-        if res.error: return res
+        if res.should_return(): return res
         
         return res.success(return_value)
                 

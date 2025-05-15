@@ -14,6 +14,6 @@ KEYWORDS = [
     'FN',
     'END',
     'RET',
-    'CONT'
+    'CONT',
     'BR'
 ]

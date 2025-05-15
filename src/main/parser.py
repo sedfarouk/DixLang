@@ -4,20 +4,24 @@
 
 from ..validations.errors import InvalidSyntaxError
 from ..validations.parser_result import *
+
 from ..constants.token_types import *
 
-from ..nodes.list_node import *
-from ..nodes.while_node import *
-from ..nodes.if_node import *
-from ..nodes.for_node import *
-from ..nodes.number_node import *
-from ..nodes.binary_operation_node import *
-from ..nodes.unary_operation_node import *
-from ..nodes.variable_access_node import *
-from ..nodes.variable_assignment_node import *
-from ..nodes.func_def_node import *
-from ..nodes.call_node import *
-from ..nodes.string_node import *
+from ..nodes.break_node import BreakNode
+from ..nodes.continue_node import ContinueNode
+from ..nodes.return_node import ReturnNode
+from ..nodes.list_node import ListNode
+from ..nodes.while_node import WhileNode
+from ..nodes.if_node import IfNode
+from ..nodes.for_node import ForNode
+from ..nodes.number_node import NumberNode
+from ..nodes.binary_operation_node import BinOpNode
+from ..nodes.unary_operation_node import UnaryOpNode
+from ..nodes.variable_access_node import VariableAccessNode
+from ..nodes.variable_assignment_node import VariableAssignmentNode
+from ..nodes.func_def_node import FuncDefNode
+from ..nodes.call_node import CallNode
+from ..nodes.string_node import StringNode
     
 #############################
 # PARSER
@@ -47,10 +51,13 @@ class Parser:
             self.current_tok = self.tokens[self.tok_idx]
     
     def parse(self):
-        res = self.statements()
+        res = ParseResult()
+        
+        statements = res.register(self.statements())
+        
         if not res.error and self.current_tok.type != TT_EOF:
             return res.failure(InvalidSyntaxError(self.current_tok.pos_start, self.current_tok.pos_end, "'Expected '+', '-', '*', '^' or '/'"))
-        return res
+        return res.success(statements)
     
     def statements(self):
         res = ParseResult()
@@ -61,7 +68,7 @@ class Parser:
             res.register_with_advancement()
             self.advance()
             
-        statement = res.register(self.expr())    
+        statement = res.register(self.statement())    
         if res.error: return res
         statements.append(statement)
 
@@ -78,7 +85,7 @@ class Parser:
                 more_statements = False
 
             if not more_statements: break
-            statement = res.try_register(self.expr())
+            statement = res.try_register(self.statement())
 
             if not statement:
                 self.reverse(res.to_reverse_count)
@@ -89,6 +96,42 @@ class Parser:
 
         return res.success(ListNode(statements, pos_start, self.current_tok.pos_end.copy()))
     
+    
+    def statement(self):
+        res = ParseResult()
+        pos_start = self.current_tok.pos_start.copy()
+    
+        if self.current_tok.matches(TT_KEYWORD, 'RET'):
+            res.register_with_advancement()
+            self.advance()
+            
+            expr = res.try_register(self.expr())
+            
+            if not expr:
+                self.reverse(res.to_reverse_count)
+            return res.success(ReturnNode(expr, pos_start, self.current_tok.pos_start.copy()))           
+    
+        if self.current_tok.matches(TT_KEYWORD, 'CONT'):
+            res.register_with_advancement()
+            self.advance()
+            
+            return res.success(ContinueNode(pos_start, self.current_tok.pos_start.copy()))
+        
+        if self.current_tok.matches(TT_KEYWORD, 'BR'):
+            res.register_with_advancement()
+            self.advance()
+            
+            return res.success(BreakNode(pos_start, self.current_tok.pos_start.copy()))
+            
+        expr = res.register(self.expr())
+        
+        if res.error: 
+            return res.failure(InvalidSyntaxError(
+                self.current_tok.pos_start, self.current_tok.pos_end,
+                f"Expected 'RET', 'CONT', 'BR', '[', 'VAR', 'IF', 'FOR', 'WHILE', 'FN', int, float, identifier or '('"
+        ))
+        
+        return res.success(expr)
 
     def atom(self):
         res = ParseResult()
@@ -270,7 +313,7 @@ class Parser:
             
             if res.error: return res
             
-            return res.success(FuncDefNode(var_name_tok, arg_name_toks, node_to_return, False))     
+            return res.success(FuncDefNode(var_name_tok, arg_name_toks, node_to_return, True))     
     
         if self.current_tok.type != TT_NEWLINE:
             return res.failure(InvalidSyntaxError(self.current_tok.pos_start, self.current_tok.pos_end,
@@ -291,7 +334,7 @@ class Parser:
         self.advance()
 
         return res.success(FuncDefNode(
-            var_name_tok, arg_name_toks, body, True
+            var_name_tok, arg_name_toks, body, False
         ))
 
 
@@ -310,7 +353,7 @@ class Parser:
         cases = []
         else_case = None
         
-        if not self.current_tok.matches(TT_KEYWORD, 'IF'):
+        if not self.current_tok.matches(TT_KEYWORD, case_keyword):
             return res.failure(InvalidSyntaxError(self.current_tok.pos_start, self.current_tok.pos_end,
                     f"Expected '{case_keyword}'"))
             
@@ -351,7 +394,7 @@ class Parser:
                 cases.extend(new_cases)
                 
         else:
-            expr = res.register(self.expr())
+            expr = res.register(self.statement())
             
             if res.error: return res
             
@@ -362,6 +405,8 @@ class Parser:
             if res.error: return res
             
             new_cases, else_case = all_cases
+            
+            cases.extend(new_cases)
 
         return res.success((cases, else_case))
 
@@ -397,7 +442,7 @@ class Parser:
                         "Expected 'END'"))
 
             else:
-                expr = res.register(self.expr())
+                expr = res.register(self.statement())
                 
                 if res.error: return res
 
@@ -566,7 +611,7 @@ class Parser:
 
             return res.success(ForNode(var_name, start_val, end_value, step_value, body, True))
 
-        body = res.register(self.expr())
+        body = res.register(self.statement())
         if res.error: return res
         
         return res.success(ForNode(var_name, start_val, end_value, step_value, body, False))
@@ -610,7 +655,7 @@ class Parser:
 
             return res.success(WhileNode(condition, body, True))
         
-        body = res.register(self.expr())
+        body = res.register(self.statement())
         
         if res.error: return res
         

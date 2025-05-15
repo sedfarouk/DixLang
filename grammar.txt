@@ -33,22 +33,22 @@ atom    : INT|FLOAT|STRING|IDENTIFIER
 list-expr : LSQB (expr (COMMA expr)*)? RSQB
 
 if-expr : KEYWORD:IF expr KEYWORD:THEN
-          (expr if-expr-b|if-expr-c)
+          (statement if-expr-b|if-expr-c)
           | (NEWLINE statements KEYWORD:END|if-expr-b|if-expr-c)
 
 if-expr-b : KEYWORD:EIF expr KEYWORD:THEN
-          (expr if-expr-b|if-expr-c?)
+          (statement if-expr-b|if-expr-c?)
           (NEWLINE statements KEYWORD:END|if-expr-b|if-expr-c)
 
 if-expr-c : KEYWORD:ELSE
-          expr
+          statement
           (NEWLINE statements KEYWORD:END)
 
 for-expr : KEYWORD:FOR IDENTIFIER EQ expr KEYWORD:TO expr
-           (KEYWORD:STEP expr)? KEYWORD:THEN expr
+           (KEYWORD:STEP expr)? KEYWORD:THEN statement
            | (NEWLINE statements KEYWORD:END)
 
-while-expr: KEYWORD:WHILE expr KEYWORD:THEN expr
+while-expr: KEYWORD:WHILE expr KEYWORD:THEN statement
             | (NEWLINE statements KEYWORD:END)
 
 func-def  : KEYWORD:FN IDENTIFIER?
