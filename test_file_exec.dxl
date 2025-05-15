@@ -1,16 +1,22 @@
-WRITE("I FINALLY DID IT! MY OWN PROGRAMMING LANGUAGE !")
+~WRITE("I FINALLY DID IT! MY OWN PROGRAMMING LANGUAGE 😎!")
 
 ~ This is a comment
-FN concatenate(prefix, suffix) -> prefix + suffix
+~FN concatenate(prefix, suffix) -> prefix + suffix
 
-FOR i = 0 TO 5 THEN
-    WRITE(concatenate("This is a from a ", "function"))
+~FOR i = 0 TO 5 THEN
+~WRITE(concatenate("This is a from a ", "function"))
+~END
+
+~FN fib(n)
+~IF n <= 1 THEN RET n
+
+~RET fib(n - 1) + fib(n - 2)
+~END
+
+~WRITE(fib(10))
+
+VAR count = 5
+WHILE count > 0 THEN
+    WRITE("Countdown: " + count)
+    VAR count = count - 1
 END
-
-FN fib(n)
-    IF n <= 1 THEN RET n
-
-    RET fib(n - 1) + fib(n - 2)
-END
-
-WRITE(fib(10))
