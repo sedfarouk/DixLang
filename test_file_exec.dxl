@@ -1,22 +1,113 @@
-~WRITE("I FINALLY DID IT! MY OWN PROGRAMMING LANGUAGE 😎!")
+WRITE("I FINALLY DID IT! MY OWN PROGRAMMING LANGUAGE 😎!")
 
-~ This is a comment
-~FN concatenate(prefix, suffix) -> prefix + suffix
 
-~FOR i = 0 TO 5 THEN
-~WRITE(concatenate("This is a from a ", "function"))
-~END
 
-~FN fib(n)
-~IF n <= 1 THEN RET n
+~This is a comment
 
-~RET fib(n - 1) + fib(n - 2)
-~END
 
-~WRITE(fib(10))
+
+FN concatenate(prefix, suffix) -> prefix + suffix
+
+FOR i = 0 TO 5 THEN
+    WRITE(concatenate("This is a from a ", "function"))
+END
+
+~ Escape Characters are also allowed !
+WRITE("\n")
+
+
+
+FN fib(n)
+    IF n <= 1 THEN RET n
+    RET fib(n - 1) + fib(n - 2)
+END
+
+WRITE("Fibonacci of 10 is: " + fib(10))
+WRITE("\n")
+
+
 
 VAR count = 5
 WHILE count > 0 THEN
     WRITE("Countdown: " + count)
     VAR count = count - 1
 END
+WRITE("\n")
+
+
+
+FOR i = 0 TO 5 THEN
+    WRITE(i)
+END
+WRITE("\n")
+
+
+
+FOR i = 10 TO 0 STEP -2 THEN
+    WRITE(i)
+END
+WRITE("\n")
+
+
+
+VAR count = 5
+WHILE count > 0 THEN
+    WRITE("Countdown: " + count)
+    VAR count = count - 1
+END
+WRITE("\n")
+
+
+
+FOR i = 1 TO 10 THEN
+    IF i == 5 THEN
+        WRITE("Found 5, stopping loop! ✋")
+        BR
+    END
+    WRITE(i)
+END
+WRITE("\n")
+
+
+
+IF a < 0 THEN
+  WRITE("Negative!")
+EIF a == 0 THEN
+  WRITE("Zero!")
+ELSE
+  WRITE("Positive!")
+END 
+WRITE("\n")
+
+
+
+FN greet(name) -> "Hello, " + name
+WRITE(greet("Alice"))
+WRITE("\n")
+
+
+
+VAR numbers = [1, 2, 3, 4]
+~ prints [1, 2, 3, 4]
+WRITE(numbers)
+WRITE("\n")
+
+
+
+APPEND(numbers, 5)
+WRITE(numbers)
+WRITE("\n")
+
+
+
+VAR greeting = "Hello, " + "World!"
+WRITE(greeting)
+WRITE("\n")
+
+
+
+WRITE("\n")
+
+
+
+WRITE("\n")

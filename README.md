@@ -35,14 +35,14 @@ To begin using DixLang:
 1. **Clone the Repository:**  
    Open your terminal and run:  
    ```bash
-   git clone https://your.repo.url/DixLang.git
+   git clone https://github.com/sedfarouk/DixLang.git
    cd DixLang
    ```
 
 2. **Run the REPL:**  
    Launch the interactive shell with:  
    ```bash
-   python -m src.main.dixlang
+   python shell.py
    ```
    Then, try out simple expressions like `5 + 3` or variable assignments.
 
@@ -50,6 +50,12 @@ To begin using DixLang:
    Create a `.dxl` file (see [Tutorials & Examples](#tutorials--examples)) and run it from the REPL using:  
    ```dxl
    RUN("your_script.dxl")
+   ```
+
+4. **Exit the REPL:**  
+   Close the interactive shell with:
+   ```dxl
+   exit
    ```
 
 ---
@@ -70,12 +76,14 @@ Example:
 ```dxl
 VAR a = 20
 VAR b = 5
-WRITE(a + b)   ~ prints 25
+~ prints 25
+WRITE(a + b)   
 ```
 
 For inline expressions:
 ```dxl
-2 + (VAR x = 2)   ~ returns 4 and assigns 2 to x!
+~ returns 4 and assigns 2 to x!
+2 + (VAR x = 2)   
 ```
 
 ### Control Flow
@@ -86,7 +94,7 @@ Single-line and multi-line if expressions are supported.
 
 *Single-line example:*
 ```dxl
-IF a < 0 THEN WRITE("Negative!") EIF a == 0 THEN WRITE("Zero!") ELSE WRITE("Positive!") END
+IF a < 0 THEN WRITE("Negative!") EIF a == 0 THEN WRITE("Zero!") ELSE WRITE("Positive!")
 ```
 
 *Multi-line example:*
@@ -168,7 +176,8 @@ DixLang supports basic list and string operations.
 **Lists:**
 ```dxl
 VAR numbers = [1, 2, 3, 4]
-WRITE(numbers)   ~ prints [1, 2, 3, 4]
+~ prints [1, 2, 3, 4]
+WRITE(numbers)   
 ```
 
 You can even perform operations like appending elements:
@@ -355,4 +364,4 @@ Happy coding and have fun exploring DixLang! 🎉
 
 ---
 
-*For any issues or contributions, please refer to our GitHub repository and open a discussion or pull request.*
+*For any issues or contributions, please refer to my GitHub repository and open a discussion or pull request. With love, Farouk ❤️*
