@@ -1,7 +1,7 @@
 # DixLang 🚀
 
-Welcome to **DixLang** – your very own programming language built from **SCRATCH** using Python!  
-Whether you’re new to programming or a seasoned coder, DixLang offers a fun and approachable way to learn language design, lexing/parsing, and interpreter internals. Plus, it’s packed with features to help you get creative 😎!
+Welcome to **DixLang** – my very own programming language built from **SCRATCH** using Python!  
+Whether you’re new to programming or a seasoned coder, DixLang offers a fun and approachable way to learn programming. Plus, it’s packed with features to help you get creative 😎!
 
 ---
 
